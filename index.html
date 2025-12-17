@@ -6,17 +6,65 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Jackson Bond</h1>
-    <p>Computer Science Student</p>
 
-    <h2>Projects</h2>
-    <ul>
-        <li>Minesweeper in Java</li>
-        <li>Custom Unix Shell in C</li>
-        <li>Memory Allocator (malloc)</li>
-    </ul>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-title">Jackson Bond</div>
 
-    <h2>Links</h2>
-    <a href="https://github.com/CantaloupeEnjoyer">GitHub</a>
+        <div class="dropdown">
+            <button class="dropbtn">Projects ▾</button>
+            <div class="dropdown-content">
+                <a href="#project1">Unix Shell (C)</a>
+                <a href="#project2">Memory Allocator</a>
+                <a href="#project3">Minesweeper (Java)</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE CONTENT -->
+    <main>
+
+        <!-- PROJECT 1 -->
+        <section id="project1" class="project">
+            <img src="images/shell.png" alt="Unix Shell Screenshot">
+            <div class="project-text">
+                <h2>Unix Shell in C</h2>
+                <p>
+                    A custom Unix shell supporting built-in commands, path resolution,
+                    redirection, and batch mode execution.
+                </p>
+                <a href="https://github.com/yourusername/shell-project">View on GitHub</a>
+            </div>
+        </section>
+
+        <!-- PROJECT 2 (reversed) -->
+        <section id="project2" class="project reverse">
+            <img src="images/malloc.png" alt="Malloc Project Screenshot">
+            <div class="project-text">
+                <h2>Custom Memory Allocator</h2>
+                <p>
+                    Implemented malloc, free, realloc, and heap strategies including
+                    best-fit and worst-fit with benchmarking.
+                </p>
+                <a href="https://github.com/yourusername/malloc">View on GitHub</a>
+            </div>
+        </section>
+
+        <!-- PROJECT 3 -->
+        <section id="project3" class="project">
+            <img src="images/minesweeper.png" alt="Minesweeper Screenshot">
+            <div class="project-text">
+                <h2>Minesweeper in Java</h2>
+                <p>
+                    Desktop implementation of Minesweeper using Java with GUI and
+                    game logic separation.
+                </p>
+                <a href="https://github.com/yourusername/minesweeper">View on GitHub</a>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
