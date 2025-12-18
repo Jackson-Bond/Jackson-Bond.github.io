@@ -16,7 +16,7 @@
             <div class="dropdown-content">
                 <a href="#project1">VR Wheelchair Simulator</a>
                 <a href="#project2">Memory Allocator</a>
-                <a href="#project3">Minesweeper (Java)</a>
+                <a href="#project3">FAT32 File System Interpreter</a>
             </div>
         </div>
     </nav>
@@ -68,41 +68,51 @@
             <div class="project-text">
                 <h2>Custom Memory Allocator</h2>
                 <p>
-                    Implemented malloc, free, realloc, and heap strategies including
-                    best-fit and worst-fit with benchmarking.
+                    Developed 4 custom heap allocation algorithms in C to replace malloc.
                 </p>
+                <ul class="project-bullets">
+                    <li>Designed and implemented four custom dynamic memory allocation algorithms in C, replacing the standard malloc</li>
+                    <li>Developed First Fit, Next Fit, Best Fit, and Worst Fit strategies for heap allocation.</li>
+                    <li>Created benchmarking test applications to compare custom implementations against standard malloc in terms of performance and memory efficiency</li>
+                </ul>
                 <div class="tools">
                     <span class="tools-label">Tools Used:</span>
                     <ul>
                         <li>C</li>
-                        <li>POSIX</li>
+                        <li>GCC</li>
                         <li>GDB</li>
-                        <li>Make</li>
+                        <li>Git</li>
                     </ul>
                 </div>
-                <a href="https://github.com/CantaloupeEnjoyer/malloc">View on GitHub</a>
+                <a href="https://github.com/CantaloupeEnjoyer/Custom-Malloc">View on GitHub</a>
             </div>
         </section>
 
         <!-- PROJECT 3 -->
         <section id="project3" class="project">
-            <img src="images/minesweeper.png" alt="Minesweeper Screenshot">
+            <img src="images/FAT32.png" alt="FAT32 File System Screenshot">
             <div class="project-text">
-                <h2>Minesweeper in Java</h2>
+                <h2>FAT32 File System</h2>
                 <p>
-                    Desktop implementation of Minesweeper using Java with GUI and
-                    game logic separation.
+                    Built a C-based interpreter for FAT32 file system images, enabling low-level file and directory interactions.
+                    Implemented essential file system commands.
                 </p>
+                <ul class="project-bullets">
+                    <li>File Operations: get (retrieve files), read (view in hex/binary/ASCII), and put (add files to the system)</li>
+                    <li>Navigation Commands: cd for directory traversal and ls for listing directory contents</li>
+                    <li>Enhanced usability with support for batch command execution within a single terminal input</li>
+                </ul>
                 <div class="tools">
                     <span class="tools-label">Tools Used:</span>
                     <ul>
                         <li>C</li>
-                        <li>POSIX</li>
+                        <li>GCC</li>
                         <li>GDB</li>
-                        <li>Make</li>
+                        <li>Bash</li>
+                        <li>Git</li>
                     </ul>
                 </div>
-                <a href="https://github.com/CantaloupeEnjoyer/minesweeper">View on GitHub</a>
+                <a href="https://github.com/CantaloupeEnjoyer/FAT32-File-System-Interpreter">View on GitHub</a>
             </div>
         </section>
 
