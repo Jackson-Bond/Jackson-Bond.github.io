@@ -15,7 +15,7 @@
             <button class="dropbtn">Projects ▾</button>
             <div class="dropdown-content">
                 <a href="#project1">VR Wheelchair Simulator</a>
-                <a href="#project2">Memory Allocator</a>
+                <a href="#project2">Resume Tailor</a>
                 <a href="#project3">FAT32 File System</a>
                 <a href="#project4">Transaction Manager</a>
                 <a href="#project5">IMDB Map/Reduce</a>
@@ -23,6 +23,7 @@
                 <a href="#project7">Educational Game - Crayon Eater</a>
                 <a href="#project8">The Worthy Shepard</a>
                 <a href="#project9">Kleptomaniac</a>
+                <a href="#project10">Custom Memory Allocator</a>
             </div>
         </div>
     </nav>
@@ -70,24 +71,28 @@
 
         <!-- PROJECT 2 (reversed) -->
         <section id="project2" class="project reverse">
-            <img src="images/malloc.png" alt="Malloc Project Screenshot">
+            <img src="images/resumeTailorSS.png" alt="Resume Tailor Screenshot">
             <div class="project-text">
-                <h2>Custom Memory Allocator</h2>
+                <h2>Resume Tailor</h2>
                 <p>
-                    Developed 4 custom heap allocation algorithms in C to replace malloc.
+                    Created a script to select projects from a list of my projects based on the job description provided by using AI to analyze and rank the options.
+                    Outputs the selected projects into a LaTeX formatted resume section and compiles the full resume into a PDF.
                 </p>
                 <ul class="project-bullets">
-                    <li>Designed and implemented four custom dynamic memory allocation algorithms in C, replacing the standard malloc</li>
-                    <li>Developed First Fit, Next Fit, Best Fit, and Worst Fit strategies for heap allocation</li>
-                    <li>Created benchmarking test applications to compare custom implementations against standard malloc in terms of performance and memory efficiency</li>
+                    <li>Integrated PDF compilation and LLM-assisted selection for top relevant projects</li>
+                    <li>Automatically generates LaTeX-formatted resume sections with project descriptions, bullets, and technologies</li>
+                    <li>Supports dynamic ranking of projects based on job descriptions, allowing quick tailoring for multiple applications</li>
                 </ul>
                 <div class="tools">
                     <span class="tools-label">Tools Used:</span>
                     <ul>
-                        <li>C</li>
-                        <li>GCC</li>
-                        <li>GDB</li>
-                        <li>Git</li>
+                        <li>Python</li>
+                        <li>LaTeX</li>
+                        <li>MiKTeX</li>
+                        <li>Sentence Transformers</li>
+                        <li>NumPy</li>
+                        <li>JSON</li>
+                        <li>Ollama/LLaMA</li>
                     </ul>
                 </div>
                 <a href="https://github.com/Jackson-Bond/Custom-Malloc">View on GitHub</a>
@@ -177,7 +182,7 @@
 
         <!-- PROJECT 6 (reversed) -->
         <section id="project6" class="project reverse">
-            <img src="images/bashLikeShell.png" alt="Bash-Like Shell Screenshot">
+            <img src="images/bash.png" alt="Bash-Like Shell Screenshot">
             <div class="project-text">
                 <h2>Bash-Like Shell</h2>
                 <p>
@@ -277,6 +282,32 @@
                         <li>Aseprite</li>
                     </ul>
                 </div>
+            </div>
+        </section>
+
+        <!-- PROJECT 10 (reversed) -->
+        <section id="project10" class="project reverse">
+            <img src="images/malloc.png" alt="Malloc Project Screenshot">
+            <div class="project-text">
+                <h2>Custom Memory Allocator</h2>
+                <p>
+                    Developed 4 custom heap allocation algorithms in C to replace malloc.
+                </p>
+                <ul class="project-bullets">
+                    <li>Designed and implemented four custom dynamic memory allocation algorithms in C, replacing the standard malloc</li>
+                    <li>Developed First Fit, Next Fit, Best Fit, and Worst Fit strategies for heap allocation</li>
+                    <li>Created benchmarking test applications to compare custom implementations against standard malloc in terms of performance and memory efficiency</li>
+                </ul>
+                <div class="tools">
+                    <span class="tools-label">Tools Used:</span>
+                    <ul>
+                        <li>C</li>
+                        <li>GCC</li>
+                        <li>GDB</li>
+                        <li>Git</li>
+                    </ul>
+                </div>
+                <a href="https://github.com/Jackson-Bond/Custom-Malloc">View on GitHub</a>
             </div>
         </section>
 
