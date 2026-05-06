@@ -2,316 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jackson Bond | Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="nav-title">Jackson Bond</div>
 
-        <div class="dropdown">
-            <button class="dropbtn">Projects ▾</button>
-            <div class="dropdown-content">
-                <a href="#project1">VR Wheelchair Simulator</a>
-                <a href="#project2">Resume Tailor</a>
-                <a href="#project3">FAT32 File System</a>
-                <a href="#project4">Transaction Manager</a>
-                <a href="#project5">IMDB Map/Reduce</a>
-                <a href="#project6">Bash-Like Shell</a>
-                <a href="#project7">Educational Game - Crayon Eater</a>
-                <a href="#project8">The Worthy Shepard</a>
-                <a href="#project9">Kleptomaniac</a>
-                <a href="#project10">Custom Memory Allocator</a>
+    <!-- Desktop -->
+    <div id="desktop">
+        <div id="desktop-icons"></div>
+    </div>
+
+    <!-- Window layer -->
+    <div id="windows-container"></div>
+
+    <!-- Start Menu -->
+    <div id="start-menu">
+        <div class="start-sidebar">
+            <span class="start-sidebar-text">Jackson Bond</span>
+        </div>
+        <div class="start-items">
+            <div class="start-item" id="start-about-btn">
+                <span class="start-item-icon">&#128100;</span>
+                <span>About Me</span>
+            </div>
+            <div class="start-separator"></div>
+            <div class="start-item" id="start-github-btn">
+                <span class="start-item-icon">&#128279;</span>
+                <span>GitHub Profile</span>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <!-- PAGE CONTENT -->
-    <main>
-        <section class="hero">
-            <h1>Jackson Bond</h1>
-            <p>
-                Computer Science student focused on systems programming,
-                backend development, and low-level problem solving.
-            </p>
-        </section>
+    <!-- Taskbar -->
+    <div id="taskbar">
+        <button id="start-btn">
+            <span class="start-logo">&#9670;</span>
+            <strong>Start</strong>
+        </button>
+        <div class="taskbar-sep"></div>
+        <div id="taskbar-buttons"></div>
+        <div class="taskbar-sep"></div>
+        <div id="taskbar-tray">
+            <div id="clock"></div>
+        </div>
+    </div>
 
-        <!-- PROJECT 1 -->
-        <section id="project1" class="project">
-            <img src="images/VRWheelchair.png" alt="VR Wheelchair Simulator Screenshot">
-            <div class="project-text">
-                <h2>VR Wheelchair Simulator</h2>
-                <p>
-                    The VR wheelchair project is a Realtime, Immersive, interactive simulator designed to help new users with mobility
-                     impairments be better prepared for real-world environments. This project continues the work of the VirtuRoll team 
-                     but with new features such as force feedback, improved wheelchair movement, enhanced ramp physics, and a less nauseating 
-                     overall experience.
-                </p>
-                <ul class="project-bullets">
-                    <li>Implemented real-time friction and resistance to simulate different terrain types</li>
-                    <li>Integrated Unreal Engine, Quest VR, Arduino controllers, encoders, and motors</li>
-                    <li>Authored technical documentation including detailed design, architecture, and system requirements</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>C++</li>
-                        <li>Unreal Engine</li>
-                        <li>Quest 2 VR Headset</li>
-                        <li>Serial Port Communication</li>
-                        <li>3D Modeling Software</li>
-                        <li>Brushless Motors</li>
-                    </ul>
-                </div>
-                <a href="https://websites.uta.edu/cseseniordesign/2025/12/09/vr-wheelchair-f25/">View the Blog Post</a>
-            </div>
-        </section>
-
-        <!-- PROJECT 2 (reversed) -->
-        <section id="project2" class="project reverse">
-            <img src="images/resumeTailorSS.png" alt="Resume Tailor Screenshot">
-            <div class="project-text">
-                <h2>Resume Tailor</h2>
-                <p>
-                    Created a script to select projects from a list of my projects based on the job description provided by using AI to analyze and rank the options.
-                    Outputs the selected projects into a LaTeX formatted resume section and compiles the full resume into a PDF.
-                </p>
-                <ul class="project-bullets">
-                    <li>Integrated PDF compilation and LLM-assisted selection for top relevant projects</li>
-                    <li>Automatically generates LaTeX-formatted resume sections with project descriptions, bullets, and technologies</li>
-                    <li>Supports dynamic ranking of projects based on job descriptions, allowing quick tailoring for multiple applications</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>Python</li>
-                        <li>LaTeX</li>
-                        <li>MiKTeX</li>
-                        <li>Sentence Transformers</li>
-                        <li>NumPy</li>
-                        <li>JSON</li>
-                        <li>Ollama/LLaMA</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJECT 3 -->
-        <section id="project3" class="project">
-            <img src="images/FAT32.png" alt="FAT32 File System Screenshot">
-            <div class="project-text">
-                <h2>FAT32 File System</h2>
-                <p>
-                    Built a C-based interpreter for FAT32 file system images, enabling low-level file and directory interactions.
-                    Implemented essential file system commands.
-                </p>
-                <ul class="project-bullets">
-                    <li>File Operations: get (retrieve files), read (view in hex/binary/ASCII), and put (add files to the system)</li>
-                    <li>Navigation Commands: cd for directory traversal and ls for listing directory contents</li>
-                    <li>Enhanced usability with support for batch command execution within a single terminal input</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>C</li>
-                        <li>GCC</li>
-                        <li>GDB</li>
-                        <li>Bash</li>
-                        <li>Git</li>
-                    </ul>
-                </div>
-                <a href="https://github.com/Jackson-Bond/FAT32-File-System-Interpreter">View on GitHub</a>
-            </div>
-        </section>
-        
-        <!-- PROJECT 4 (reversed) -->
-        <section id="project4" class="project reverse">
-            <img src="images/transactionManager.png" alt="Transaction Manager Screenshot">
-            <div class="project-text">
-                <h2>Transaction Manager</h2>
-                <p>
-                    This project implements the transaction logic for Strict 2PL specification. 
-                    The focus of the implementation is on correct synchronization, locking, and waiting behavior to ensure safe concurrent execution.
-                </p>
-                <ul class="project-bullets">
-                    <li>Implements transaction execution with proper lock acquisition and release</li>
-                    <li>Ensures correctness under concurrent transaction execution</li>
-                    <li>Uses waiting logic to handle lock contention safely</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>C</li>
-                        <li>GCC</li>
-                        <li>GDB</li>
-                    </ul>
-                </div>
-                <a href="https://github.com/Jackson-Bond/Transaction-Manager-Implementation">View on GitHub</a>
-            </div>
-        </section>
-
-        <!-- PROJECT 5 -->
-        <section id="project5" class="project">
-            <img src="images/mapreduce.jpg" alt="IMDB Map/Reduce Screenshot">
-            <div class="project-text">
-                <h2>IMDB Map/Reduce</h2>
-                <p>
-                    Hadoop MapReduce project that processes IMDB datasets using a multi-stage MapReduce pipeline. The program was designed to run both 
-                    locally and on a SLURM-managed Hadoop cluster. Implements Map/Reduce to fin the amount of movies done by an actor per year (Willem Dafoe in this case).
-                </p>
-                <ul class="project-bullets">
-                    <li>Created 2 Jobs of Map/Reduce</li>
-                    <li>Configurable parameters for job execution to control the amount of mappers & reducers</li>
-                    <li>Analyzed performance of different mapper/reducer counts included in spreadsheet</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>Java</li>
-                        <li>Hadoop 3.2.2</li>
-                        <li>HDFS</li>
-                        <li>SLURM</li>
-                    </ul>
-                </div>
-                <a href="https://github.com/Jackson-Bond/IMDB-Database-MapReduce">View on GitHub</a>
-            </div>
-        </section>
-
-        <!-- PROJECT 6 (reversed) -->
-        <section id="project6" class="project reverse">
-            <img src="images/bash.png" alt="Bash-Like Shell Screenshot">
-            <div class="project-text">
-                <h2>Bash-Like Shell</h2>
-                <p>
-                    Custom shell program written in C that utilizes forking to allow users to execute commands, navigate directories, and handles basic 
-                    built-in commands (such as exit, quit, and cd), and supports output redirection to files. It also allows batch mode for reading commands from a file.
-                </p>
-                <ul class="project-bullets">
-                    <li>Allows redirection of command output to a file using the > operator</li>
-                    <li>Prompts users with msh> to enter commands</li>
-                    <li>The shell searches for commands in the directories /bin/, /usr/bin/, /usr/local/bin/, and the current directory (./)</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>C</li>
-                        <li>POSIX System Calls</li>
-                        <li>Linux/Unix Environment</li>
-                        <li>Process Management (fork/exec)</li>
-                        <li>File I/O Redirection</li>
-                    </ul>
-                </div>
-                <a href="https://github.com/Jackson-Bond/Bash-Like-Shell">View on GitHub</a>
-            </div>
-        </section>
-
-        <!-- PROJECT 7 -->
-        <section id="project7" class="project">
-            <img src="images/crayon.png" alt="Educational Game - Crayon Eater Screenshot">
-            <div class="project-text">
-                <h2>Educational Game - Crayon Eater</h2>
-                <p>
-                    Crayon Eater is an educational game designed to teach children elementary math such as addition, subtraction, and multiplication.
-                    In the game you eat crayons to gain points and answering math questions correctly will give you more crayons to eat.
-                </p>
-                <ul class="project-bullets">
-                    <li>Animations and sound effects designed to be engaging</li>
-                    <li>A wide range of difficulty levels to progressively challenge players</li>
-                    <li>Fully self made art designed to look like a child drew it</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>Unity</li>
-                        <li>C#</li>
-                        <li>Krita</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJECT 8 -->
-        <section id="project8" class="project reverse">
-            <img src="images/Herder.png" alt="The Worthy Shepard Screenshot">
-            <div class="project-text">
-                <h2>The Worthy Shepard</h2>
-                <p>
-                    The Worthy Shepard is a game where the player herds sheep with the goal of obtaining the golden fleece.
-                    Implements Boid's realistic flocking algorithm to simulate sheep movement.
-                    The player can herd their flock and leave them in different pens to gain gold (racing pen where faster sheep perform better, fattening pen where sheep gain more weight, etc).
-                </p>
-                <ul class="project-bullets">
-                    <li>Avoid wolves while herding sheep</li>
-                    <li>Each sheeps color is determined by their 6 stats, with each stat assigned a color. The colors are then weighted and mixed to get the sheeps final color</li>
-                    <li>Multiple mini games each having a unique sheep stat that will perform better</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>Unity</li>
-                        <li>C#</li>
-                        <li>Boid's Algorithm</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJECT 9 -->
-        <section id="project9" class="project">
-            <img src="images/klepto.png" alt="Kleptomaniac">
-            <div class="project-text">
-                <h2>Kleptomaniac</h2>
-                <p>
-                    Kleptomaniac is a game where you can steal anything that isn't nailed down! The goal of the game is to steal the kings crown and become the new ruler.
-                    Avoid guards and traps while stealing valuable items to increase your gold. Follows a quest system where you can complete side quests to gain more gold and items.
-                    Developed in a group of 4 people over the course of 3 weeks. 
-                </p>
-                <ul class="project-bullets">
-                    <li>Objects for everything within the game so that everything is stealable</li>
-                    <li>Scripts designed to be efficient to reduce lag and improve performance</li>
-                    <li>Implemented 4 different types of enemies each with their own mechanics and animations</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>Unity</li>
-                        <li>C#</li>
-                        <li>Aseprite</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJECT 10 (reversed) -->
-        <section id="project10" class="project reverse">
-            <img src="images/malloc.png" alt="Malloc Project Screenshot">
-            <div class="project-text">
-                <h2>Custom Memory Allocator</h2>
-                <p>
-                    Developed 4 custom heap allocation algorithms in C to replace malloc.
-                </p>
-                <ul class="project-bullets">
-                    <li>Designed and implemented four custom dynamic memory allocation algorithms in C, replacing the standard malloc</li>
-                    <li>Developed First Fit, Next Fit, Best Fit, and Worst Fit strategies for heap allocation</li>
-                    <li>Created benchmarking test applications to compare custom implementations against standard malloc in terms of performance and memory efficiency</li>
-                </ul>
-                <div class="tools">
-                    <span class="tools-label">Tools Used:</span>
-                    <ul>
-                        <li>C</li>
-                        <li>GCC</li>
-                        <li>GDB</li>
-                        <li>Git</li>
-                    </ul>
-                </div>
-                <a href="https://github.com/Jackson-Bond/Custom-Malloc">View on GitHub</a>
-            </div>
-        </section>
-
-    </main>
-
+    <!-- scripts -->
     <script src="script.js"></script>
 </body>
 </html>
