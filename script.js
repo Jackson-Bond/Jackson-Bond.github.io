@@ -1,6 +1,8 @@
 'use strict';
 
-// PROJECT DATA ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ============================================================
+//  PROJECT DATA
+// ============================================================
 const PROJECTS = [
   {
     id: 'vrwheelchair',
@@ -129,8 +131,9 @@ const PROJECTS = [
   },
 ];
 
-// STATE -------------------------------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  STATE
+// ============================================================
 let highestZ = 100;
 const openWindows = {};
 let selectedIcon  = null;
@@ -175,8 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('mouseup', onMouseUp);
 });
 
-// DESKTOP ICONS --------------------------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  DESKTOP ICONS
+// ============================================================
 function buildDesktop() {
   const container = document.getElementById('desktop-icons');
   container.appendChild(createIconEl({ id: 'about', title: 'About Me', isAbout: true }));
@@ -246,8 +250,9 @@ function deselectAll() {
   }
 }
 
-// WINDOWS --------------------------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  WINDOWS
+// ============================================================
 function openProjectWindow(project) {
   if (openWindows[project.id]) {
     restoreWindow(project.id);
@@ -263,7 +268,7 @@ function openProjectWindow(project) {
   win.style.left = (80 + count * 25) + 'px';
   win.style.top  = (50 + count * 25) + 'px';
   win.style.width  = '480px';
-  win.style.height = '420px';
+  win.style.height = '560px';
   win.style.zIndex = ++highestZ;
 
   // Title bar
@@ -343,25 +348,17 @@ function openProjectWindow(project) {
     content.appendChild(toolsWrap);
   }
 
-  // Actions
-  const actions = document.createElement('div');
-  actions.className = 'proj-actions';
-
-  const closeAction = document.createElement('button');
-  closeAction.className = 'win-action-btn';
-  closeAction.textContent = 'Close';
-  closeAction.addEventListener('click', () => closeWindow(project.id));
-  actions.appendChild(closeAction);
-
+  // Actions - only show View Project button if there's a link
   if (project.link) {
+    const actions = document.createElement('div');
+    actions.className = 'proj-actions';
     const viewBtn = document.createElement('button');
     viewBtn.className = 'win-action-btn';
     viewBtn.textContent = 'View Project';
     viewBtn.addEventListener('click', () => window.open(project.link, '_blank', 'noopener,noreferrer'));
     actions.appendChild(viewBtn);
+    content.appendChild(actions);
   }
-
-  content.appendChild(actions);
   body.appendChild(content);
 
   // Resize handle
@@ -500,8 +497,9 @@ function makeWinBtn(cls, label, fn) {
   return btn;
 }
 
-// Window Management --------------------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  WINDOW MANAGEMENT
+// ============================================================
 function focusWindow(id) {
   const state = openWindows[id];
   if (!state) return;
@@ -560,8 +558,9 @@ function toggleMaximize(id) {
   }
 }
 
-// TASKBAR BUTTONS ------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  TASKBAR BUTTONS
+// ============================================================
 function addTaskbarBtn(project) {
   const container = document.getElementById('taskbar-buttons');
 
@@ -614,8 +613,9 @@ function updateTaskbarBtns() {
   });
 }
 
-// DRAGGING -------------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  DRAG
+// ============================================================
 function startDrag(e, id) {
   const state = openWindows[id];
   if (!state || state.maximized) return;
@@ -659,7 +659,7 @@ function onMouseMove(e) {
     const dx = e.clientX - rsStartX;
     const dy = e.clientY - rsStartY;
     state.el.style.width  = Math.max(320, rsStartW + dx) + 'px';
-    state.el.style.height = Math.max(200, rsStartH + dy) + 'px';
+    state.el.style.height = Math.max(420, rsStartH + dy) + 'px';
   }
 }
 
@@ -670,8 +670,9 @@ function onMouseUp() {
   document.body.classList.remove('is-resizing');
 }
 
-// START MENU ---------------------------------------------------------------------------------------------
-
+// ============================================================
+//  START MENU
+// ============================================================
 function toggleStartMenu() {
   startMenuOpen = !startMenuOpen;
   const menu = document.getElementById('start-menu');
@@ -686,8 +687,9 @@ function closeStartMenu() {
   document.getElementById('start-btn').classList.remove('active');
 }
 
-// CLOCK -------------------------------------------------------------------------------------------------------------------
-
+// ============================================================
+//  CLOCK
+// ============================================================
 function startClock() {
   const el = document.getElementById('clock');
   function tick() {

@@ -140,7 +140,7 @@ body {
 .win {
     position: absolute;
     min-width: 320px;
-    min-height: 200px;
+    min-height: 420px;
     background: var(--win-bg);
     pointer-events: all;
     /* XP window border - raised 3D */
@@ -292,9 +292,11 @@ body {
 /* Window content area */
 .win-body {
     flex: 1;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: var(--win-bg);
     position: relative;
+    min-height: 0;
 }
 
 /* Resize handle */
