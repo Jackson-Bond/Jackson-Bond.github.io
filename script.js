@@ -1,8 +1,6 @@
 'use strict';
 
-// ============================================================
-//  PROJECT DATA
-// ============================================================
+// PROJECT DATA ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const PROJECTS = [
   {
     id: 'vrwheelchair',
@@ -131,9 +129,8 @@ const PROJECTS = [
   },
 ];
 
-// ============================================================
-//  STATE
-// ============================================================
+// STATE -------------------------------------------------------------------------------------------------------------------------------
+
 let highestZ = 100;
 const openWindows = {};
 let selectedIcon  = null;
@@ -178,9 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('mouseup', onMouseUp);
 });
 
-// ============================================================
-//  DESKTOP ICONS
-// ============================================================
+// DESKTOP ICONS --------------------------------------------------------------------------------------------------------------------------
+
 function buildDesktop() {
   const container = document.getElementById('desktop-icons');
   container.appendChild(createIconEl({ id: 'about', title: 'About Me', isAbout: true }));
@@ -250,9 +246,8 @@ function deselectAll() {
   }
 }
 
-// ============================================================
-//  WINDOWS
-// ============================================================
+// WINDOWS --------------------------------------------------------------------------------------------------------------------------
+
 function openProjectWindow(project) {
   if (openWindows[project.id]) {
     restoreWindow(project.id);
@@ -505,9 +500,8 @@ function makeWinBtn(cls, label, fn) {
   return btn;
 }
 
-// ============================================================
-//  WINDOW MANAGEMENT
-// ============================================================
+// Window Management --------------------------------------------------------------------------------------------------------------------
+
 function focusWindow(id) {
   const state = openWindows[id];
   if (!state) return;
@@ -566,9 +560,8 @@ function toggleMaximize(id) {
   }
 }
 
-// ============================================================
-//  TASKBAR BUTTONS
-// ============================================================
+// TASKBAR BUTTONS ------------------------------------------------------------------------------------------------------
+
 function addTaskbarBtn(project) {
   const container = document.getElementById('taskbar-buttons');
 
@@ -621,9 +614,8 @@ function updateTaskbarBtns() {
   });
 }
 
-// ============================================================
-//  DRAG
-// ============================================================
+// DRAGGING -------------------------------------------------------------------------------------------------------------
+
 function startDrag(e, id) {
   const state = openWindows[id];
   if (!state || state.maximized) return;
@@ -678,9 +670,8 @@ function onMouseUp() {
   document.body.classList.remove('is-resizing');
 }
 
-// ============================================================
-//  START MENU
-// ============================================================
+// START MENU ---------------------------------------------------------------------------------------------
+
 function toggleStartMenu() {
   startMenuOpen = !startMenuOpen;
   const menu = document.getElementById('start-menu');
@@ -695,9 +686,8 @@ function closeStartMenu() {
   document.getElementById('start-btn').classList.remove('active');
 }
 
-// ============================================================
-//  CLOCK
-// ============================================================
+// CLOCK -------------------------------------------------------------------------------------------------------------------
+
 function startClock() {
   const el = document.getElementById('clock');
   function tick() {
