@@ -456,13 +456,7 @@ function openAboutWindow() {
   ghBtn.textContent = '🔗 GitHub';
   ghBtn.addEventListener('click', () => window.open('https://github.com/Jackson-Bond', '_blank', 'noopener,noreferrer'));
 
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'win-action-btn';
-  closeBtn.textContent = 'Close';
-  closeBtn.addEventListener('click', () => closeWindow(id));
-
   links.appendChild(ghBtn);
-  links.appendChild(closeBtn);
 
   content.appendChild(header);
   content.appendChild(section1);

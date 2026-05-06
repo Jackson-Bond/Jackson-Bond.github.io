@@ -151,7 +151,6 @@ body {
         2px 2px 8px rgba(0,0,0,0.4),
         inset 0 0 0 1px #d4d0c8;
     border-radius: 6px 6px 0 0;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -336,8 +335,9 @@ body {
 
 .proj-img {
     width: 100%;
-    height: auto;
+    max-height: 220px;
     object-fit: contain;
+    object-position: top center;
     flex-shrink: 0;
     border: 2px solid;
     border-color: var(--win-sh) var(--win-hi) var(--win-hi) var(--win-sh);
