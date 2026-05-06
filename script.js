@@ -2,15 +2,6 @@
 
 // ============================================================
 //  PROJECT DATA
-//  To add a new project, copy one object and append it to the array.
-//  Fields:
-//    id       – unique snake_case key (no spaces)
-//    title    – display name
-//    image    – path to the project image (used as icon AND window screenshot)
-//    description – paragraph text
-//    bullets  – array of bullet point strings
-//    tools    – array of technology names
-//    link     – (optional) URL for "View Project" button
 // ============================================================
 const PROJECTS = [
   {
@@ -93,7 +84,7 @@ const PROJECTS = [
     id: 'crayoneater',
     title: 'Crayon Eater',
     image: 'images/crayon.png',
-    description: 'An educational game designed to teach children elementary math (addition, subtraction, multiplication). Eat crayons to gain points — answer math questions correctly to earn more crayons.',
+    description: 'An educational game designed to teach children elementary math (addition, subtraction, multiplication). Eat crayons to gain points â€” answer math questions correctly to earn more crayons.',
     bullets: [
       'Animations and sound effects designed to be engaging for children',
       'A wide range of difficulty levels to progressively challenge players',
@@ -108,7 +99,7 @@ const PROJECTS = [
     description: "A game where the player herds sheep to obtain the golden fleece. Uses Boid's realistic flocking algorithm to simulate sheep movement. Leave flocks in specialized pens to earn gold.",
     bullets: [
       "Avoid wolves while herding your flock",
-      "Each sheep's color is determined by 6 stats — each stat is assigned a color, weighted and blended into the sheep's final appearance",
+      "Each sheep's color is determined by 6 stats â€” each stat is assigned a color, weighted and blended into the sheep's final appearance",
       'Multiple mini-games each requiring a different sheep stat to excel',
     ],
     tools: ['Unity', 'C#', "Boid's Algorithm"],
@@ -119,7 +110,7 @@ const PROJECTS = [
     image: 'images/klepto.png',
     description: "Steal anything that isn't nailed down! Your goal is to steal the king's crown and become the new ruler. Avoid guards and traps, complete side quests for gold. Built in a group of 4 over 3 weeks.",
     bullets: [
-      'Everything in the game is an object — everything is stealable',
+      'Everything in the game is an object â€” everything is stealable',
       'Scripts optimized for performance to reduce lag',
       '4 distinct enemy types each with unique mechanics and animations',
     ],
@@ -143,22 +134,18 @@ const PROJECTS = [
 // ============================================================
 //  STATE
 // ============================================================
-let highestZ    = 100;
-const openWindows = {};   // id -> { el, minimized, maximized, savedRect }
+let highestZ = 100;
+const openWindows = {};
 let selectedIcon  = null;
 let startMenuOpen = false;
-
-// Drag
 let dragging  = null;
 let dragOffX  = 0;
 let dragOffY  = 0;
-
-// Resize
-let resizing     = null;
-let rsStartX     = 0;
-let rsStartY     = 0;
-let rsStartW     = 0;
-let rsStartH     = 0;
+let resizing  = null;
+let rsStartX  = 0;
+let rsStartY  = 0;
+let rsStartW  = 0;
+let rsStartH  = 0;
 
 // ============================================================
 //  INIT
@@ -188,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup',   onMouseUp);
+  document.addEventListener('mouseup', onMouseUp);
 });
 
 // ============================================================
@@ -196,11 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================
 function buildDesktop() {
   const container = document.getElementById('desktop-icons');
-
-  // "About Me" icon at the top
   container.appendChild(createIconEl({ id: 'about', title: 'About Me', isAbout: true }));
-
-  // Project icons
   PROJECTS.forEach(p => container.appendChild(createIconEl(p)));
 }
 
@@ -209,39 +192,43 @@ function createIconEl(project) {
   icon.className = 'desktop-icon';
   icon.dataset.projectId = project.id;
 
-  // Image wrapper
   const wrap = document.createElement('div');
   wrap.className = 'icon-img-wrap';
 
   if (project.isAbout) {
     const span = document.createElement('span');
     span.className = 'about-icon';
-    span.textContent = '\uD83D\uDC64';   // ??
+    span.textContent = '\uD83D\uDC64';
     wrap.appendChild(span);
   } else {
     const img = document.createElement('img');
+    img.className = 'icon-img';
     img.src = project.image;
     img.alt = project.title;
-    img.className = 'icon-img';
-    img.draggable = false;
     wrap.appendChild(img);
   }
 
-  // Label
   const label = document.createElement('span');
   label.className = 'icon-label';
-  label.textContent = project.title;
+  label.textContent = project.title || 'About Me';
 
   icon.appendChild(wrap);
   icon.appendChild(label);
 
+  // Single click = select
   icon.addEventListener('click', (e) => {
     e.stopPropagation();
     selectIcon(icon);
+    closeStartMenu();
+  });
+
+  // Double click = open
+  icon.addEventListener('dblclick', (e) => {
+    e.stopPropagation();
     if (project.isAbout) {
       openAboutWindow();
     } else {
-      openWindow(project);
+      openProjectWindow(project);
     }
   });
 
@@ -249,9 +236,11 @@ function createIconEl(project) {
 }
 
 function selectIcon(icon) {
-  if (selectedIcon) selectedIcon.classList.remove('selected');
-  selectedIcon = icon;
-  icon.classList.add('selected');
+  if (selectedIcon && selectedIcon !== icon) {
+    selectedIcon.classList.remove('selected');
+  }
+  icon.classList.toggle('selected');
+  selectedIcon = icon.classList.contains('selected') ? icon : null;
 }
 
 function deselectAll() {
@@ -262,279 +251,356 @@ function deselectAll() {
 }
 
 // ============================================================
-//  WINDOW MANAGEMENT
+//  WINDOWS
 // ============================================================
-function openWindow(project) {
-  const id = project.id;
-
-  if (openWindows[id]) {
-    if (openWindows[id].minimized) restoreWindow(id);
-    bringToFront(id);
+function openProjectWindow(project) {
+  if (openWindows[project.id]) {
+    restoreWindow(project.id);
     return;
   }
 
-  const winEl = document.createElement('div');
-  winEl.className = 'win2k-window';
-  winEl.id = 'win-' + id;
-  winEl.style.zIndex = ++highestZ;
+  const win = document.createElement('div');
+  win.className = 'win';
+  win.dataset.id = project.id;
 
-  // Cascade position
-  const numOpen = Object.keys(openWindows).length;
-  const off = (numOpen % 10) * 26;
-  winEl.style.left = (70 + off) + 'px';
-  winEl.style.top  = (40 + off) + 'px';
+  // Position with slight cascade
+  const count = Object.keys(openWindows).length;
+  win.style.left = (80 + count * 25) + 'px';
+  win.style.top  = (50 + count * 25) + 'px';
+  win.style.width  = '480px';
+  win.style.height = '420px';
+  win.style.zIndex = ++highestZ;
 
-  const bulletsHTML = project.bullets
-    .map(b => '<li>' + escHtml(b) + '</li>')
-    .join('');
-  const toolsHTML = project.tools
-    .map(t => '<span class="tool-pill">' + escHtml(t) + '</span>')
-    .join('');
-  const linkHTML = project.link
-    ? '<a href="' + escHtml(project.link) + '" target="_blank" rel="noopener noreferrer" class="win-link">View Project &#x2197;</a>'
-    : '';
+  // Title bar
+  const titleBar = document.createElement('div');
+  titleBar.className = 'win-title-bar';
 
-  winEl.innerHTML =
-    '<div class="win-titlebar">' +
-      '<div class="win-title">' +
-        '<img src="' + escHtml(project.image) + '" class="win-title-icon" alt="" draggable="false">' +
-        '<span>' + escHtml(project.title) + '</span>' +
-      '</div>' +
-      '<div class="win-controls">' +
-        '<button class="win-btn js-min"  title="Minimize">&#8722;</button>' +
-        '<button class="win-btn js-max"  title="Maximize">&#9633;</button>' +
-        '<button class="win-btn win-close-btn js-close" title="Close">&#10005;</button>' +
-      '</div>' +
-    '</div>' +
-    '<div class="win-menubar">' +
-      '<span>File</span><span>Edit</span><span>View</span><span>Help</span>' +
-    '</div>' +
-    '<div class="win-content">' +
-      '<img src="' + escHtml(project.image) + '" class="win-screenshot" alt="' + escHtml(project.title) + '" draggable="false">' +
-      '<div class="win-details">' +
-        '<h2>' + escHtml(project.title) + '</h2>' +
-        '<p>'  + escHtml(project.description) + '</p>' +
-        '<ul class="win-bullets">' + bulletsHTML + '</ul>' +
-        '<div class="win-tools"><strong>Tools Used:</strong>' +
-          '<div class="tools-pills">' + toolsHTML + '</div>' +
-        '</div>' +
-        linkHTML +
-      '</div>' +
-    '</div>' +
-    '<div class="win-statusbar">' + escHtml(project.title) + '</div>' +
-    '<div class="win-resize-handle js-resize"></div>';
+  const iconEl = document.createElement('img');
+  iconEl.className = 'win-icon';
+  iconEl.src = project.image;
+  iconEl.alt = '';
 
-  wireWindowEvents(winEl, id);
-  document.getElementById('windows-container').appendChild(winEl);
+  const titleText = document.createElement('span');
+  titleText.className = 'win-title-text';
+  titleText.textContent = project.title;
 
-  openWindows[id] = { el: winEl, minimized: false, maximized: false, savedRect: null };
-  addTaskbarBtn(id, project.title, project.image);
-  bringToFront(id);
+  const btns = document.createElement('div');
+  btns.className = 'win-btns';
+
+  const minBtn = makeWinBtn('win-btn-min', 'â€”', () => minimizeWindow(project.id));
+  const maxBtn = makeWinBtn('win-btn-max', 'â–¡', () => toggleMaximize(project.id));
+  const closeBtn = makeWinBtn('win-btn-close', 'âœ•', () => closeWindow(project.id));
+
+  btns.appendChild(minBtn);
+  btns.appendChild(maxBtn);
+  btns.appendChild(closeBtn);
+
+  titleBar.appendChild(iconEl);
+  titleBar.appendChild(titleText);
+  titleBar.appendChild(btns);
+
+  // Toolbar strip
+  const toolbar = document.createElement('div');
+  toolbar.className = 'win-toolbar';
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'win-body';
+
+  const content = document.createElement('div');
+  content.className = 'proj-content';
+
+  // Screenshot
+  const img = document.createElement('img');
+  img.className = 'proj-img';
+  img.src = project.image;
+  img.alt = project.title;
+  content.appendChild(img);
+
+  // Description
+  const desc = document.createElement('p');
+  desc.className = 'proj-desc';
+  desc.textContent = project.description;
+  content.appendChild(desc);
+
+  // Bullets
+  if (project.bullets && project.bullets.length) {
+    const ul = document.createElement('ul');
+    ul.className = 'proj-bullets';
+    project.bullets.forEach(b => {
+      const li = document.createElement('li');
+      li.textContent = b;
+      ul.appendChild(li);
+    });
+    content.appendChild(ul);
+  }
+
+  // Tools
+  if (project.tools && project.tools.length) {
+    const toolsWrap = document.createElement('div');
+    toolsWrap.className = 'proj-tools-wrap';
+    project.tools.forEach(t => {
+      const tag = document.createElement('span');
+      tag.className = 'proj-tool-tag';
+      tag.textContent = t;
+      toolsWrap.appendChild(tag);
+    });
+    content.appendChild(toolsWrap);
+  }
+
+  // Actions
+  const actions = document.createElement('div');
+  actions.className = 'proj-actions';
+
+  const closeAction = document.createElement('button');
+  closeAction.className = 'win-action-btn';
+  closeAction.textContent = 'Close';
+  closeAction.addEventListener('click', () => closeWindow(project.id));
+  actions.appendChild(closeAction);
+
+  if (project.link) {
+    const viewBtn = document.createElement('button');
+    viewBtn.className = 'win-action-btn';
+    viewBtn.textContent = 'View Project';
+    viewBtn.addEventListener('click', () => window.open(project.link, '_blank', 'noopener,noreferrer'));
+    actions.appendChild(viewBtn);
+  }
+
+  content.appendChild(actions);
+  body.appendChild(content);
+
+  // Resize handle
+  const resize = document.createElement('div');
+  resize.className = 'win-resize';
+  resize.addEventListener('mousedown', (e) => startResize(e, project.id));
+
+  win.appendChild(titleBar);
+  win.appendChild(toolbar);
+  win.appendChild(body);
+  win.appendChild(resize);
+
+  // Drag
+  titleBar.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.win-btn')) return;
+    startDrag(e, project.id);
+  });
+
+  // Focus on click
+  win.addEventListener('mousedown', () => focusWindow(project.id));
+
+  document.getElementById('windows-container').appendChild(win);
+
+  openWindows[project.id] = { el: win, minimized: false, maximized: false, savedRect: null, project };
+  addTaskbarBtn(project);
 }
 
 function openAboutWindow() {
   const id = 'about';
-
   if (openWindows[id]) {
-    if (openWindows[id].minimized) restoreWindow(id);
-    bringToFront(id);
+    restoreWindow(id);
     return;
   }
 
-  const winEl = document.createElement('div');
-  winEl.className = 'win2k-window';
-  winEl.id = 'win-about';
-  winEl.style.zIndex = ++highestZ;
-  winEl.style.left = '90px';
-  winEl.style.top  = '60px';
+  const win = document.createElement('div');
+  win.className = 'win';
+  win.dataset.id = id;
 
-  winEl.innerHTML =
-    '<div class="win-titlebar">' +
-      '<div class="win-title">' +
-        '<span class="win-title-text-icon">&#128100;</span>' +
-        '<span>About Me &#8211; Jackson Bond</span>' +
-      '</div>' +
-      '<div class="win-controls">' +
-        '<button class="win-btn js-min"  title="Minimize">&#8722;</button>' +
-        '<button class="win-btn js-max"  title="Maximize">&#9633;</button>' +
-        '<button class="win-btn win-close-btn js-close" title="Close">&#10005;</button>' +
-      '</div>' +
-    '</div>' +
-    '<div class="win-menubar">' +
-      '<span>File</span><span>Edit</span><span>View</span><span>Help</span>' +
-    '</div>' +
-    '<div class="win-content about-content">' +
-      '<div class="about-body">' +
-        '<h2>Jackson Bond</h2>' +
-        '<p>Computer Science student focused on systems programming, backend development, and low-level problem solving.</p>' +
-        '<p>I enjoy building things from scratch &mdash; whether it\'s a custom memory allocator, a VR simulator, or a game with hand-drawn art.</p>' +
-        '<p>Click any icon on the desktop to open a project!</p>' +
-      '</div>' +
-    '</div>' +
-    '<div class="win-statusbar">Ready</div>';
+  const count = Object.keys(openWindows).length;
+  win.style.left = (120 + count * 20) + 'px';
+  win.style.top  = (60 + count * 20) + 'px';
+  win.style.width  = '400px';
+  win.style.height = '340px';
+  win.style.zIndex = ++highestZ;
 
-  wireWindowEvents(winEl, id);
-  document.getElementById('windows-container').appendChild(winEl);
+  const titleBar = document.createElement('div');
+  titleBar.className = 'win-title-bar';
 
-  openWindows[id] = { el: winEl, minimized: false, maximized: false, savedRect: null };
-  addTaskbarBtn(id, 'About Me', null);
-  bringToFront(id);
-}
+  const iconEl = document.createElement('span');
+  iconEl.style.fontSize = '14px';
+  iconEl.textContent = 'ðŸ‘¤';
 
-// Attach all event listeners to a freshly created window element
-function wireWindowEvents(winEl, id) {
-  winEl.querySelector('.win-titlebar').addEventListener('mousedown', (e) => {
-    if (e.button !== 0 || e.target.closest('.win-controls')) return;
-    startDrag(e, winEl);
+  const titleText = document.createElement('span');
+  titleText.className = 'win-title-text';
+  titleText.textContent = 'About Me';
+
+  const btns = document.createElement('div');
+  btns.className = 'win-btns';
+  btns.appendChild(makeWinBtn('win-btn-min', 'â€”', () => minimizeWindow(id)));
+  btns.appendChild(makeWinBtn('win-btn-max', 'â–¡', () => toggleMaximize(id)));
+  btns.appendChild(makeWinBtn('win-btn-close', 'âœ•', () => closeWindow(id)));
+
+  titleBar.appendChild(iconEl);
+  titleBar.appendChild(titleText);
+  titleBar.appendChild(btns);
+
+  const toolbar = document.createElement('div');
+  toolbar.className = 'win-toolbar';
+
+  const body = document.createElement('div');
+  body.className = 'win-body';
+
+  const content = document.createElement('div');
+  content.className = 'about-content';
+
+  const header = document.createElement('div');
+  header.className = 'about-header';
+  header.innerHTML = `
+    <span class="about-avatar">ðŸ‘¤</span>
+    <div>
+      <div class="about-name">Jackson Bond</div>
+      <div class="about-subtitle">Computer Science Student &amp; Developer</div>
+    </div>
+  `;
+
+  const section1 = document.createElement('div');
+  section1.innerHTML = `<div class="about-section-title">About</div>
+    <p class="about-text">Computer Science student at UT Arlington with a passion for systems programming, game development, and creative software solutions. I enjoy building things that are both technically challenging and meaningful to users.</p>`;
+
+  const links = document.createElement('div');
+  links.className = 'about-links';
+
+  const ghBtn = document.createElement('button');
+  ghBtn.className = 'win-action-btn';
+  ghBtn.textContent = 'ðŸ”— GitHub';
+  ghBtn.addEventListener('click', () => window.open('https://github.com/Jackson-Bond', '_blank', 'noopener,noreferrer'));
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'win-action-btn';
+  closeBtn.textContent = 'Close';
+  closeBtn.addEventListener('click', () => closeWindow(id));
+
+  links.appendChild(ghBtn);
+  links.appendChild(closeBtn);
+
+  content.appendChild(header);
+  content.appendChild(section1);
+  content.appendChild(links);
+  body.appendChild(content);
+
+  const resize = document.createElement('div');
+  resize.className = 'win-resize';
+  resize.addEventListener('mousedown', (e) => startResize(e, id));
+
+  titleBar.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.win-btn')) return;
+    startDrag(e, id);
   });
 
-  winEl.querySelector('.js-min').addEventListener('click', ()  => minimizeWindow(id));
-  winEl.querySelector('.js-max').addEventListener('click', ()  => toggleMaximize(id));
-  winEl.querySelector('.js-close').addEventListener('click', () => closeWindow(id));
+  win.addEventListener('mousedown', () => focusWindow(id));
 
-  const resizeHandle = winEl.querySelector('.js-resize');
-  if (resizeHandle) {
-    resizeHandle.addEventListener('mousedown', (e) => startResize(e, winEl));
-  }
+  win.appendChild(titleBar);
+  win.appendChild(toolbar);
+  win.appendChild(body);
+  win.appendChild(resize);
 
-  winEl.addEventListener('mousedown', () => bringToFront(id));
+  document.getElementById('windows-container').appendChild(win);
+  openWindows[id] = { el: win, minimized: false, maximized: false, savedRect: null, project: { id, title: 'About Me' } };
+  addTaskbarBtn({ id, title: 'About Me' });
+}
+
+function makeWinBtn(cls, label, fn) {
+  const btn = document.createElement('button');
+  btn.className = 'win-btn ' + cls;
+  btn.addEventListener('click', (e) => { e.stopPropagation(); fn(); });
+  return btn;
+}
+
+// ============================================================
+//  WINDOW MANAGEMENT
+// ============================================================
+function focusWindow(id) {
+  const state = openWindows[id];
+  if (!state) return;
+  state.el.style.zIndex = ++highestZ;
+  updateTaskbarBtns();
 }
 
 function closeWindow(id) {
-  const s = openWindows[id];
-  if (!s) return;
-  s.el.remove();
+  const state = openWindows[id];
+  if (!state) return;
+  state.el.remove();
   delete openWindows[id];
   removeTaskbarBtn(id);
 }
 
 function minimizeWindow(id) {
-  const s = openWindows[id];
-  if (!s || s.minimized) return;
-  s.el.classList.add('minimized');
-  s.minimized = true;
-  syncTaskbarBtn(id);
+  const state = openWindows[id];
+  if (!state) return;
+  state.el.style.display = 'none';
+  state.minimized = true;
+  updateTaskbarBtns();
 }
 
 function restoreWindow(id) {
-  const s = openWindows[id];
-  if (!s) return;
-  s.el.classList.remove('minimized');
-  s.minimized = false;
-  syncTaskbarBtn(id);
+  const state = openWindows[id];
+  if (!state) return;
+  state.el.style.display = 'flex';
+  state.minimized = false;
+  focusWindow(id);
 }
 
 function toggleMaximize(id) {
-  const s = openWindows[id];
-  if (!s) return;
+  const state = openWindows[id];
+  if (!state) return;
+  const el = state.el;
 
-  if (s.maximized) {
-    s.el.classList.remove('maximized');
-    const r = s.savedRect;
-    s.el.style.left   = r.left;
-    s.el.style.top    = r.top;
-    s.el.style.width  = r.width;
-    s.maximized = false;
-    s.savedRect = null;
-    s.el.querySelector('.js-max').innerHTML = '&#9633;';
+  if (!state.maximized) {
+    state.savedRect = {
+      left: el.style.left,
+      top: el.style.top,
+      width: el.style.width,
+      height: el.style.height,
+    };
+    el.style.left   = '0px';
+    el.style.top    = '0px';
+    el.style.width  = '100%';
+    el.style.height = '100%';
+    state.maximized = true;
   } else {
-    s.savedRect = { left: s.el.style.left, top: s.el.style.top, width: s.el.style.width };
-    s.el.classList.add('maximized');
-    s.maximized = true;
-    s.el.querySelector('.js-max').innerHTML = '&#9723;';
+    const r = state.savedRect;
+    el.style.left   = r.left;
+    el.style.top    = r.top;
+    el.style.width  = r.width;
+    el.style.height = r.height;
+    state.maximized = false;
   }
-}
-
-function bringToFront(id) {
-  const s = openWindows[id];
-  if (!s) return;
-  s.el.style.zIndex = ++highestZ;
-
-  // Active/inactive title bars
-  Object.keys(openWindows).forEach(wid => {
-    openWindows[wid].el.querySelector('.win-titlebar')
-      .classList.toggle('inactive', wid !== id);
-  });
-
-  // Taskbar button active state
-  document.querySelectorAll('.taskbar-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.wid === id);
-  });
-}
-
-// ============================================================
-//  DRAG
-// ============================================================
-function startDrag(e, winEl) {
-  e.preventDefault();
-  dragging = winEl;
-  dragOffX = e.clientX - winEl.offsetLeft;
-  dragOffY = e.clientY - winEl.offsetTop;
-  document.body.classList.add('is-dragging');
-}
-
-function onMouseMove(e) {
-  if (dragging) {
-    const maxX = window.innerWidth  - dragging.offsetWidth;
-    const maxY = window.innerHeight - 28 - 10;
-    dragging.style.left = Math.max(0, Math.min(e.clientX - dragOffX, maxX)) + 'px';
-    dragging.style.top  = Math.max(0, Math.min(e.clientY - dragOffY, maxY)) + 'px';
-  }
-
-  if (resizing) {
-    const newW = Math.max(320, rsStartW + (e.clientX - rsStartX));
-    const newH = Math.max(220, rsStartH + (e.clientY - rsStartY));
-    resizing.style.width = newW + 'px';
-    const content = resizing.querySelector('.win-content');
-    if (content) content.style.maxHeight = Math.max(120, newH - 90) + 'px';
-  }
-}
-
-function onMouseUp() {
-  dragging = null;
-  resizing = null;
-  document.body.classList.remove('is-dragging', 'is-resizing');
-}
-
-// ============================================================
-//  RESIZE
-// ============================================================
-function startResize(e, winEl) {
-  e.preventDefault();
-  e.stopPropagation();
-  resizing  = winEl;
-  rsStartX  = e.clientX;
-  rsStartY  = e.clientY;
-  rsStartW  = winEl.offsetWidth;
-  rsStartH  = winEl.offsetHeight;
-  document.body.classList.add('is-resizing');
 }
 
 // ============================================================
 //  TASKBAR BUTTONS
 // ============================================================
-function addTaskbarBtn(id, title, imgSrc) {
+function addTaskbarBtn(project) {
   const container = document.getElementById('taskbar-buttons');
+
   const btn = document.createElement('button');
-  btn.className = 'taskbar-btn active';
-  btn.dataset.wid = id;
+  btn.className = 'taskbar-btn';
+  btn.dataset.winId = project.id;
 
-  const iconHTML = imgSrc
-    ? '<img src="' + escHtml(imgSrc) + '" class="taskbar-btn-icon" alt="" draggable="false">'
-    : '<span style="font-size:12px;flex-shrink:0">&#128100;</span>';
+  if (project.image) {
+    const img = document.createElement('img');
+    img.className = 'taskbar-btn-icon';
+    img.src = project.image;
+    img.alt = '';
+    btn.appendChild(img);
+  } else {
+    const span = document.createElement('span');
+    span.style.fontSize = '12px';
+    span.textContent = 'ðŸ‘¤';
+    btn.appendChild(span);
+  }
 
-  btn.innerHTML = iconHTML + '<span class="taskbar-btn-label">' + escHtml(title) + '</span>';
+  const label = document.createElement('span');
+  label.className = 'taskbar-btn-label';
+  label.textContent = project.title;
+  btn.appendChild(label);
 
   btn.addEventListener('click', () => {
-    const s = openWindows[id];
-    if (!s) return;
-    if (s.minimized) {
-      restoreWindow(id);
-      bringToFront(id);
-    } else if (+s.el.style.zIndex === highestZ) {
-      minimizeWindow(id);
+    const state = openWindows[project.id];
+    if (!state) return;
+    if (state.minimized) {
+      restoreWindow(project.id);
     } else {
-      bringToFront(id);
+      minimizeWindow(project.id);
     }
   });
 
@@ -542,15 +608,74 @@ function addTaskbarBtn(id, title, imgSrc) {
 }
 
 function removeTaskbarBtn(id) {
-  const btn = document.querySelector('.taskbar-btn[data-wid="' + id + '"]');
+  const btn = document.querySelector(`.taskbar-btn[data-win-id="${id}"]`);
   if (btn) btn.remove();
 }
 
-function syncTaskbarBtn(id) {
-  const btn = document.querySelector('.taskbar-btn[data-wid="' + id + '"]');
-  if (!btn) return;
-  const s = openWindows[id];
-  btn.classList.toggle('active', !s.minimized);
+function updateTaskbarBtns() {
+  document.querySelectorAll('.taskbar-btn').forEach(btn => {
+    const id = btn.dataset.winId;
+    const state = openWindows[id];
+    if (!state) return;
+    btn.classList.toggle('active', !state.minimized && parseInt(state.el.style.zIndex) === highestZ);
+  });
+}
+
+// ============================================================
+//  DRAG
+// ============================================================
+function startDrag(e, id) {
+  const state = openWindows[id];
+  if (!state || state.maximized) return;
+  e.preventDefault();
+  focusWindow(id);
+  dragging = id;
+  const rect = state.el.getBoundingClientRect();
+  dragOffX = e.clientX - rect.left;
+  dragOffY = e.clientY - rect.top;
+  document.body.classList.add('is-dragging');
+}
+
+function startResize(e, id) {
+  e.preventDefault();
+  e.stopPropagation();
+  focusWindow(id);
+  resizing = id;
+  rsStartX = e.clientX;
+  rsStartY = e.clientY;
+  const state = openWindows[id];
+  rsStartW = state.el.offsetWidth;
+  rsStartH = state.el.offsetHeight;
+  document.body.classList.add('is-resizing');
+}
+
+function onMouseMove(e) {
+  if (dragging) {
+    const state = openWindows[dragging];
+    if (!state) return;
+    let nx = e.clientX - dragOffX;
+    let ny = e.clientY - dragOffY;
+    ny = Math.max(-28, ny);
+    const taskbarH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-h'));
+    ny = Math.min(window.innerHeight - taskbarH - 28, ny);
+    state.el.style.left = nx + 'px';
+    state.el.style.top  = ny + 'px';
+  }
+  if (resizing) {
+    const state = openWindows[resizing];
+    if (!state) return;
+    const dx = e.clientX - rsStartX;
+    const dy = e.clientY - rsStartY;
+    state.el.style.width  = Math.max(320, rsStartW + dx) + 'px';
+    state.el.style.height = Math.max(200, rsStartH + dy) + 'px';
+  }
+}
+
+function onMouseUp() {
+  dragging = null;
+  resizing = null;
+  document.body.classList.remove('is-dragging');
+  document.body.classList.remove('is-resizing');
 }
 
 // ============================================================
@@ -558,12 +683,13 @@ function syncTaskbarBtn(id) {
 // ============================================================
 function toggleStartMenu() {
   startMenuOpen = !startMenuOpen;
-  document.getElementById('start-menu').classList.toggle('open', startMenuOpen);
-  document.getElementById('start-btn').classList.toggle('active', startMenuOpen);
+  const menu = document.getElementById('start-menu');
+  const btn  = document.getElementById('start-btn');
+  menu.classList.toggle('open', startMenuOpen);
+  btn.classList.toggle('active', startMenuOpen);
 }
 
 function closeStartMenu() {
-  if (!startMenuOpen) return;
   startMenuOpen = false;
   document.getElementById('start-menu').classList.remove('open');
   document.getElementById('start-btn').classList.remove('active');
@@ -573,26 +699,14 @@ function closeStartMenu() {
 //  CLOCK
 // ============================================================
 function startClock() {
+  const el = document.getElementById('clock');
   function tick() {
-    const now  = new Date();
-    let   h    = now.getHours();
-    const m    = now.getMinutes().toString().padStart(2, '0');
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    h = h % 12 || 12;
-    document.getElementById('clock').textContent = h + ':' + m + ' ' + ampm;
+    const now = new Date();
+    const h = now.getHours() % 12 || 12;
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+    el.textContent = `${h}:${m} ${ampm}`;
   }
   tick();
-  // Sync to minute boundary
-  const now = new Date();
-  setTimeout(() => { tick(); setInterval(tick, 60000); }, (60 - now.getSeconds()) * 1000);
-}
-
-// ============================================================
-//  UTILS
-// ============================================================
-function escHtml(str) {
-  if (!str) return '';
-  const d = document.createElement('div');
-  d.appendChild(document.createTextNode(str));
-  return d.innerHTML;
+  setInterval(tick, 1000);
 }
