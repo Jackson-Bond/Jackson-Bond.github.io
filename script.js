@@ -110,7 +110,7 @@ const PROJECTS = [
     image: 'images/klepto.png',
     description: "Steal anything that isn't nailed down! Your goal is to steal the king's crown and become the new ruler. Avoid guards and traps, complete side quests for gold. Built in a group of 4 over 3 weeks.",
     bullets: [
-      'Everything in the game is an object — everything is stealable',
+      'Implemented object-based systems allowing nearly all items to be stolen',
       'Scripts optimized for performance to reduce lag',
       '4 distinct enemy types each with unique mechanics and animations',
     ],
@@ -128,6 +128,19 @@ const PROJECTS = [
     ],
     tools: ['C', 'GCC', 'GDB', 'Git'],
     link: 'https://github.com/Jackson-Bond/Custom-Malloc',
+  },
+  {
+    id: 'vae',
+    title: 'Variational Autoencoder',
+    image: 'images/vae.png',
+    description: 'A Variational Autoencoder (VAE) trained on the CelebA face dataset, with an interactive GUI for exploring the latent space.',
+    bullets: [
+      'A convolutional VAE encodes 64×64 celebrity images into a 6-dimensional latent space and reconstructs them, with a tunable β parameter for disentanglement',
+      'A Tkinter interface with 6 sliders lets you manipulate each latent dimension and instantly decode/visualize the resulting face',
+      'Includes a training script with configurable epochs/batch size/β, and a saved model checkpoint'
+    ],
+    tools: ['Python', 'PyTorch', 'NumpPy', 'Tkinter', 'Neural Networks', 'AI'],
+    link: 'https://github.com/Jackson-Bond/Celebrity_Variational_AutoEncoder',
   },
 ];
 
