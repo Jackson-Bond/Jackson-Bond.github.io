@@ -142,6 +142,19 @@ const PROJECTS = [
     tools: ['Python', 'PyTorch', 'NumpPy', 'Tkinter', 'Neural Networks', 'AI'],
     link: 'https://github.com/Jackson-Bond/Celebrity_Variational_AutoEncoder',
   },
+  {
+    id: 'transformer',
+    title: 'Transformer Language Model',
+    image: 'images/transformer.png',
+    description: 'A implementation of a transformer-based language model in PyTorch. The model is trained on a built-in text corpus to perform next-word prediction and text generation.',
+    bullets: [
+      'Trains a small transformer (multi-head self-attention + feed-forward blocks) to predict the next word in a sequence',
+      'Generates new text autoregressively from a seed phrase',
+      'Optionally loads a custom corpus from a file'
+    ],
+    tools: ['Python', 'PyTorch', 'NumpPy', 'Tkinter', 'Neural Networks', 'AI'],
+    link: 'https://github.com/Jackson-Bond/Transformer_LM/tree/main',
+  },
 ];
 
 // ============================================================
